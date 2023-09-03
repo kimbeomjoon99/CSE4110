@@ -1,0 +1,16 @@
+drop table shipper_customer
+drop table payment_through_shipper
+drop table tracking
+drop table shipment
+drop table shipper
+drop table payment
+drop table package
+drop table customer
+create table customer (customer_ID varchar(20) not null, name varchar(20) not null, phone_number varchar(20) not null, account varchar(30) not null, cummulative_cost int not null, cummulative_shipment int not null, age int not null, primary key(customer_ID))
+create table package (package_ID varchar(20) not null, packed_type varchar(15) not null, return_type varchar(15) not null, danger_degree int not null, weight int not null, status varchar(20) not null, value int not null, content varchar(30) not null, recipient varchar(30) not null, customer_ID varchar(20) not null, primary key(package_ID), foreign key(customer_ID) references customer(customer_ID))
+create table payment (payment_ID varchar(20) not null, total_cost int not null, payment_type varchar(20) not null, payment_date DATE not null, unpaid_cost int not null, address varchar(127) not null, customer_ID varchar(20) not null, package_ID varchar(20) not null, primary key(payment_ID), foreign key(customer_ID) references customer(customer_ID), foreign key(package_ID) references package(package_ID))
+create table shipper (shipper_ID varchar(20) not null, name varchar(20) not null, cummulative_cost int not null, cummulative_shipment int not null, primary key(shipper_ID))
+create table shipment (shipment_ID varchar(20) not null, depart_loc varchar(127) not null, arrive_loc varchar(127) not null, next_loc varchar(127), current_loc varchar(127) not null, prearranged_time DATE not null, primary key(shipment_ID))
+create table tracking (package_ID varchar(20) not null, shipment_ID varchar(20) not null, trackdate DATE not null, trackloc varchar(127) not null, shipping_key varchar(15) not null, primary key(package_ID, trackdate, trackloc), foreign key(package_ID) references package(package_ID), foreign key(shipment_ID) references shipment(shipment_ID))
+create table payment_through_shipper (payment_ID varchar(20) not null, shipper_ID varchar(20) not null, contract_key varchar(20) not null, primary key(payment_ID), foreign key(payment_ID) references payment(payment_ID), foreign key(shipper_ID) references shipper(shipper_ID))
+create table shipper_customer (shipper_ID varchar(20) not null, customer_ID varchar(20) not null, primary key(shipper_ID, customer_ID), foreign key(shipper_ID) references shipper(shipper_ID), foreign key(customer_ID) references customer(customer_ID))

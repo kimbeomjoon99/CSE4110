@@ -1,0 +1,8 @@
+drop table shipper_customer
+drop table payment_through_shipper
+drop table tracking
+drop table shipment
+drop table shipper
+drop table payment
+drop table package
+drop table customer
